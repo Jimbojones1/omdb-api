@@ -8,12 +8,18 @@ import MovieInfo from './MovieInfo/MovieInfo'
 
 function App() {
   const [movieData, setMovieData] = useState({})
+  const [movieTitle, setMovieTitle] = useState('Star Wars')
+
+  function getSearchTerm(searchTitle){
+    console.log(searchTitle, ' <- app.js searchtitle')
+    setMovieTitle(searchTitle)
+  }
 
   useEffect(() => {
 
-    const apiEndPoint = `http://www.omdbapi.com/?apikey=98e3fb1f&t=Eraserhead`
+    const apiEndPoint = `http://www.omdbapi.com/?apikey=98e3fb1f&t=${movieTitle}`
 
-
+    
     async function getMovie(){
       try {
         // by default fetch makes http get requests, to some endpoint
@@ -37,12 +43,12 @@ function App() {
     getMovie()
 
     console.log('useEffect is running')
-  }, []); // Empty dependency array means call the effect once when the components loads onto the dom!
+  }, [movieTitle]); // Empty dependency array means call the effect once when the components loads onto the dom!
 
   return (
     <>
    
-      <MovieSearch />
+      <MovieSearch getSearchTerm={getSearchTerm}/>
       <MovieInfo movie={movieData} />
     </>
   )
